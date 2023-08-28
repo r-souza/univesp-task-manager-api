@@ -1,0 +1,33 @@
+// https://aka.ms/devcontainer.json
+{
+    "name": "Existing Docker Compose (Extend)",
+    "dockerComposeFile": ["../docker-compose.yml"],
+    "service": "laravel.test",
+    "workspaceFolder": "/var/www/html/univesp-task-manager-api",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "xdebug.php-debug",
+                "felixfbecker.php-debug",
+                "felixfbecker.php-intellisense",
+                "mrmlnc.vscode-apache",
+                "wakatime.vscode-wakatime",
+                "amiralizadeh9480.laravel-extra-intellisense",
+                "bmewburn.vscode-intelephense-client",
+                "shufo.vscode-blade-formatter",
+                "junstyle.php-cs-fixer",
+                "github.copilot",
+                "pixelfear.composer-links",
+                "WakaTime.vscode-wakatime",
+                "onecentlin.laravel-extension-pack",
+                "DEVSENSE.composer-php-vscode"
+            ],
+            "settings": {}
+        }
+    },
+    "remoteUser": "sail",
+    "postCreateCommand": "chown -R 1000:1000 /var/www/html/univesp-task-manager-api"
+    // "forwardPorts": [],
+    // "runServices": [],
+    // "shutdownAction": "none",
+}
