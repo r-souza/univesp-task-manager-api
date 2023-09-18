@@ -49,11 +49,11 @@ class MakeRepository extends GeneratorCommand
     protected function buildClass($name)
     {
         $model = $this->option('model')
-            ? $this->qualifyClass($this->option('model'))
-            : $name;
+            ? $this->qualifyModel($this->option('model'))
+            : $this->qualifyModel($this->getClassWithoutNamespace($name));
 
         #Get Model name without namespace
-        $class = str_replace($this->getNamespace($model).'\\', '', $model);
+        $class = $this->getClassWithoutNamespace($model);
 
         return str_replace(
             ['DummyModel', 'DModelName' ,'dummyVar'],
@@ -89,5 +89,10 @@ class MakeRepository extends GeneratorCommand
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'The name of the model'],
         ];
+    }
+
+    private function getClassWithoutNamespace($class)
+    {
+        return str_replace($this->getNamespace($class).'\\', '', $class);
     }
 }
