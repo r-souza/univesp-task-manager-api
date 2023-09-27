@@ -2,19 +2,29 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Priority;
+
 use Tests\TestCase;
+use Tests\Traits\Feature\CrudTrait;
+use Tests\Traits\Feature\ValidationTrait;
 
 class PriorityTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    use CrudTrait;
+    use ValidationTrait;
 
-        $response->assertStatus(200);
-    }
+    private $modelClass = Priority::class;
+    private $routePrefix = 'priorities';
+
+    private $requiredValidationFields = [
+        'name'
+    ];
+
+    private $minValidationFields = [
+        'name' => '3'
+    ];
+
+    private $maxValidationFields = [
+        'name' => '255'
+    ];
 }

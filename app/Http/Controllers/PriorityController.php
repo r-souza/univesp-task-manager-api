@@ -2,65 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\ApiControllerTrait;
 use App\Http\Requests\StorePriorityRequest;
 use App\Http\Requests\UpdatePriorityRequest;
-use App\Models\Priority;
+use App\Http\Resources\PriorityCollection;
+use App\Http\Resources\PriorityResource;
+use App\Repositories\PriorityRepository;
 
 class PriorityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    use ApiControllerTrait;
+
+    private $repository;
+    private $resourceClass;
+    private $resourceCollectionClass;
+
+    public function __construct(PriorityRepository $PriorityRepository)
     {
-        //
+        /**
+         * For use with Trait
+         */
+
+        $this->repository = $PriorityRepository;
+        $this->resourceClass = PriorityResource::class;
+        $this->resourceCollectionClass = PriorityCollection::class;
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    * Update the specified resource in storage.
+    *
+    * @param  App\Http\Requests\PriorityRequest $request
+    * @param  int $id
+    * @return App\Http\Resources\PriorityResource
+    */
+    public function update(UpdatePriorityRequest $request, $id)
     {
-        //
+        return $this->traitUpdate($request, $id);
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param  App\Http\Requests\PriorityRequest    $request
+     * @return App\Http\Resources\PriorityResource
      */
     public function store(StorePriorityRequest $request)
     {
-        //
+        return $this->traitStore($request);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Priority $priority)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Priority $priority)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePriorityRequest $request, Priority $priority)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Priority $priority)
-    {
-        //
-    }
 }

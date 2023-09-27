@@ -28,10 +28,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /**
      * Restore routes
      */
-    Route::post('/priorities/{id}/restore', [PriorityController::class, 'restore'])->name('priotiry.restore');
+    Route::post('/priorities/{id}/restore', [PriorityController::class, 'restore'])->name('priorities.restore');
 
     /**
      * Trashed routes
      */
-    Route::get('/priorities/{id}/trashed', [PriorityController::class, 'showTrashed'])->name('priority.showTrashed');
+    Route::get('/priorities/{id}/trashed', [PriorityController::class, 'showTrashed'])->name('priorities.showTrashed');
 });
