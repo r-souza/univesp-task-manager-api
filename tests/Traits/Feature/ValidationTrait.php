@@ -2,129 +2,147 @@
 
 namespace Tests\Traits\Feature;
 
-use Illuminate\Support\Str;
-use Tests\Traits\CommonTrait;
-
 trait ValidationTrait
 {
-    use CommonTrait;
+    use CommonValidationTrait;
     /**
-     * It Can Check Size Validation Fields
      *
-     * @param string $class
-     * @param array $fields
+     * @return void
+     */
+    public function testItCanValidateStoreRequest(): void
+    {
+        $this->withoutMiddleware();
+        $route = $this->getRoute('store');
+
+        /**
+         * Validate fields with required rule
+         */
+        $this->checkRequiredRule($route);
+
+        /**
+         * Validate fields with size rule
+         */
+        $this->checkSizeRule($route);
+
+        /**
+         * Validate fields with min rule
+         */
+        $this->checkMinRule($route);
+
+        /**
+         * Validate fields with max rule
+         */
+        $this->checkMaxRule($route);
+
+        /**
+         * Validate fields with unique rule
+         */
+        $this->checkUniqueRule($route);
+    }
+
+    /**
+     *
+     * @return void
+     */
+    public function testItCanValidateUpdateRequest(): void
+    {
+        $this->withoutMiddleware();
+        $route = $this->getRoute('update');
+
+        /**
+         * Validate fields with required rule
+         */
+        $this->checkRequiredRule($route, true);
+
+        /**
+         * Validate fields with size rule
+         */
+        $this->checkSizeRule($route, true);
+
+        /**
+         * Validate fields with min rule
+         */
+        $this->checkMinRule($route, true);
+
+        /**
+         * Validate fields with max rule
+         */
+        $this->checkMaxRule($route, true);
+
+        /**
+         * Validate fields with unique rule
+         */
+        $this->checkUniqueRule($route, true);
+    }
+
+    /**
+     * Validate fields with required rule
+     *
      * @param string $route
      * @param boolean $updating
      * @return void
      */
-    public function itCanCheckSizeValidationFields(string $class, array $fields, string $route, bool $updating = false): void
+    private function checkRequiredRule(string $route, $updating = false): void
     {
-        foreach ($fields as $field => $size) {
-            $data = $this->makeModel($class, [
-                $field => $this->faker->text($size + 100)
-            ])->toArray();
-
-            if ($updating) {
-                $this->itCanValidateOnUpdateModelOverHttp($data, $class, $route, $field);
-            } else {
-                $this->itCanValidateOnCreateModelOverHttp($data, $route, $field);
-            }
-
+        if (isset($this->requiredValidationFields)) {
+            $this->itCanCheckRequiredValidationFields($this->modelClass, $this->requiredValidationFields, $route, $updating);
         }
     }
 
     /**
-     * It Can Check Min Validation Fields
+     * Validate fields with unique rule
      *
-     * @param string $class
-     * @param array $fields
      * @param string $route
      * @param boolean $updating
      * @return void
      */
-    public function itCanCheckMinValidationFields(string $class, array $fields, string $route, bool $updating = false): void
+    private function checkUniqueRule(string $route, $updating = false): void
     {
-        foreach ($fields as $field => $size) {
-            $data = $this->makeModel($class, [
-                $field => Str::random($size - 1)
-            ])->toArray();
-
-            if ($updating) {
-                $this->itCanValidateOnUpdateModelOverHttp($data, $class, $route, $field);
-            } else {
-                $this->itCanValidateOnCreateModelOverHttp($data, $route, $field);
-            }
+        if (isset($this->uniqueValidationFields)) {
+            $this->itCanCheckUniqueValidationFields($this->modelClass, $this->uniqueValidationFields, $route, $updating);
         }
     }
 
     /**
-     * It Can Check Max Validation Fields
-     *
-     * @param string $class
-     * @param array $fields
-     * @param string $route
-     * @param boolean $updating
-     * @return void
-     */
-    public function itCanCheckMaxValidationFields(string $class, array $fields, string $route, $updating = false): void
+    * Validate fields with size rule
+    *
+    * @param string $route
+    * @param boolean $updating
+    * @return void
+    */
+    private function checkSizeRule(string $route, $updating = false): void
     {
-        foreach ($fields as $field => $size) {
-            $data = $this->makeModel($class, [
-                $field => Str::random($size + 1)
-            ])->toArray();
-
-            if ($updating) {
-                $this->itCanValidateOnUpdateModelOverHttp($data, $class, $route, $field);
-            } else {
-                $this->itCanValidateOnCreateModelOverHttp($data, $route, $field);
-            }
+        if (isset($this->sizeValidationFields)) {
+            $this->itCanCheckSizeValidationFields($this->modelClass, $this->sizeValidationFields, $route, $updating);
         }
     }
 
     /**
-     * It Can Check Required Validation Fields
-     *
-     * @param string $class
-     * @param array $fields
-     * @param string $route
-     * @param boolean $updating
-     * @return void
-     */
-    public function itCanCheckRequiredValidationFields(string $class, array $fields, string $route, bool $updating = false): void
+    *  Validate fields with min rule
+    *
+    * @param string $route
+    * @param boolean $updating
+    * @return void
+    */
+    private function checkMinRule(string $route, $updating = false): void
     {
-        foreach ($fields as $field) {
-            $data = $this->makeModel($class)->toArray();
-            $data[$field] = '';
-
-            if ($updating) {
-                $this->itCanValidateOnUpdateModelOverHttp($data, $class, $route, $field);
-            } else {
-                $this->itCanValidateOnCreateModelOverHttp($data, $route, $field);
-            }
+        if (isset($this->minValidationFields)) {
+            $this->itCanCheckMinValidationFields($this->modelClass, $this->minValidationFields, $route, $updating);
         }
     }
 
     /**
-     * It Can Check Unique Validation Fields
+     *  Validate fields with max rule
      *
-     * @param string $class
-     * @param array $fields
      * @param string $route
      * @param boolean $updating
      * @return void
      */
-    public function itCanCheckUniqueValidationFields(string $class, array $fields, string $route, bool $updating = false): void
+    private function checkMaxRule(string $route, $updating = false): void
     {
-        foreach ($fields as $field) {
-            $model = $this->createModel($class);
-            $data = $this->makeModel($class)->toArray();
-            $data[$field] = $model->$field;
-
-            if ($updating) {
-                $this->itCanValidateOnUpdateModelOverHttp($data, $class, $route, $field);
-            } else {
-                $this->itCanValidateOnCreateModelOverHttp($data, $route, $field);
-            }
+        if (isset($this->maxValidationFields)) {
+            $this->itCanCheckMaxValidationFields($this->modelClass, $this->maxValidationFields, $route, $updating);
         }
     }
+
 }
