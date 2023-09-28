@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PriorityController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,15 +24,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resources([
         'priorities' => \App\Http\Controllers\PriorityController::class,
+        'projects' => \App\Http\Controllers\ProjectController::class,
     ]);
 
     /**
      * Restore routes
      */
     Route::post('/priorities/{id}/restore', [PriorityController::class, 'restore'])->name('priorities.restore');
+    Route::post('/projects/{id}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
 
     /**
      * Trashed routes
      */
     Route::get('/priorities/{id}/trashed', [PriorityController::class, 'showTrashed'])->name('priorities.showTrashed');
+    Route::get('/projects/{id}/trashed', [ProjectController::class, 'showTrashed'])->name('projects.showTrashed');
 });
