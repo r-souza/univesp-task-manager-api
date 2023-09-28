@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Repositories;
+
+use DummyModel;
+
+class DummyClassRepository extends BaseRepository
+{
+    protected $model;
+
+    /**
+     * DummyClassRepository constructor
+     * @param DModelName $dummyVar
+     */
+     public function __construct(DModelName $dummyVar)
+     {
+         $this->model = $dummyVar;
+     }
+
+}
