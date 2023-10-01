@@ -23,7 +23,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::prefix('auth')->group(function () {
+    Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('auth.login');
+});
+
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('auth.logout');
+        Route::get('refresh', [\App\Http\Controllers\AuthController::class, 'refresh'])->name('auth.refresh');
+    });
+
+    Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me'])->name('auth.me');
+
     Route::resources([
         'priorities' => \App\Http\Controllers\PriorityController::class,
         'projects' => \App\Http\Controllers\ProjectController::class,
