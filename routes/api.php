@@ -35,6 +35,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me'])->name('auth.me');
 
+    Route::get('/users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+
     Route::resources([
         'priorities' => \App\Http\Controllers\PriorityController::class,
         'projects' => \App\Http\Controllers\ProjectController::class,
