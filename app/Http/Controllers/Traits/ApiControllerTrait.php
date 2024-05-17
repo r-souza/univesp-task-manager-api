@@ -39,7 +39,7 @@ trait ApiControllerTrait
 
         $filter = $request->filter;
 
-        $records = $this->repository->paginate($per_page, $sortColumn, $sortOrder, $filter);
+        $records = $this->repository->paginate($per_page, $sortColumn, $sortOrder, $filterField, $filter);
 
         return new $this->resourceCollectionClass($records);
     }

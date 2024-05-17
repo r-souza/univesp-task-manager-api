@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             PrioritySeeder::class,
+            StatusSeeder::class,
         ]);
     }
 }

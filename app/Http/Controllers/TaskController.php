@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskCollection;
 use App\Http\Resources\TaskResource;
 use App\Repositories\TaskRepository;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -26,6 +27,36 @@ class TaskController extends Controller
         $this->repository = $TaskRepository;
         $this->resourceClass = TaskResource::class;
         $this->resourceCollectionClass = TaskCollection::class;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return ResourceCollection
+     */
+    public function index(Request $request)
+    {
+        $per_page = $request->per_page;
+
+        #Define a default column to sort with
+        $sortColumn = ($request->sortColumn ? $request->sortColumn : 'id');
+
+        #Define a default sort order
+        $sortOrder = ($request->sortOrder ? $request->sortOrder : 'asc');
+
+        #Define a default filter field
+        $filterField = ($request->filterField ? $request->filterField : 'name');
+
+        $filter = $request->filter;
+
+        $statusId = $request->status_id;
+        $projectId = $request->project_id;
+        $priorityId = $request->priority_id;
+        $userId = $request->user_id;
+
+        $tasks = $this->repository->paginate($per_page, $sortColumn, $sortOrder, $filterField, $filter, $statusId, $projectId, $priorityId, $userId);
+
+        return new $this->resourceCollectionClass($tasks);
     }
 
     /**
