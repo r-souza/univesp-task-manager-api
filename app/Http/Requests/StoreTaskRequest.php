@@ -22,12 +22,13 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'          => 'required|min:3|max:255',
-            'description'   => 'nullable|min:3|max:255',
-            'priority_id'   => 'required|exists:priorities,id',
-            'project_id'    => 'required|exists:projects,id',
-            'status_id'     => 'required|exists:statuses,id',
-            'user_id'       => 'required|exists:users,id'
+            'name'                  => 'required|min:3|max:255',
+            'description'           => 'nullable|min:3|max:255',
+            'priority_id'           => 'required|exists:priorities,id',
+            'project_id'            => 'required|exists:projects,id',
+            'status_id'             => 'required|exists:statuses,id',
+            'user_id'               => 'required|exists:users,id',
+            'effective_duration'    => 'nullable|integer|min:1'
         ];
     }
 }

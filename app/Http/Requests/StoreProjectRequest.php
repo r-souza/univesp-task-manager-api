@@ -22,7 +22,8 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => 'required|min:3|max:255'
+            'name'  => 'required|min:3|max:255',
+            'estimated_duration' => 'nullable|integer|min:1'
         ];
     }
 }

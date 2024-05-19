@@ -20,7 +20,8 @@ class Project extends Model implements Auditable
     */
     protected $fillable = [
         'name',
-        'description'
+        'description',
+        'estimated_duration'
     ];
 
     public function tasks()

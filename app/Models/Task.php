@@ -25,7 +25,8 @@ class Task extends Model implements Auditable
         'priority_id',
         'project_id',
         'status_id',
-        'user_id'
+        'user_id',
+        'effective_duration'
     ];
 
     public function priority()
